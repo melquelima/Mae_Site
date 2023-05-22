@@ -3,7 +3,7 @@ version: "2"
 services:
   app:
     build: .
-    container_name: control_panel
+    container_name: mae_site_backend
     command: python -u ./run.py
     restart: always
     ports:
