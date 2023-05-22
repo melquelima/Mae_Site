@@ -26,6 +26,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-COPY . .
+COPY ./backend .
 
 RUN pip install -r requirements.txt
