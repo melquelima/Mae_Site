@@ -8,6 +8,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /app
 
-COPY ./backend .
+COPY . .
 
 RUN pip install -r requirements.txt
