@@ -50,7 +50,6 @@ export class ProdutoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) { 
-
   }
 
   ngOnInit(): void {

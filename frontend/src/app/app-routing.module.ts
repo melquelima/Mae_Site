@@ -11,7 +11,7 @@ import { AuthGuard } from "./guard/auth.guard";
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "dashboard",
+    redirectTo: "/produtos/pesquisar",
     pathMatch: "full"
   },
   {

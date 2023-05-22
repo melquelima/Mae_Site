@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'produtos/novo';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/produtos/pesquisar';
 
     var cred = this.authService.stored_credentials();
     if(cred.user != ""){
