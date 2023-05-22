@@ -24,11 +24,16 @@
             
           </div>
           <div class=" col-lg-6 col-5 text-right" [hidden]="mode != 'view'">
-            <button class=" btn btn-icon btn-warning" type="button" [routerLink]="['/produtos/'+produto.id+'/edit']"><span
+            <button class=" btn btn-icon btn-warning" type="button" (click)="navigate(produto.id+'/edit')"><span
               class=" btn-inner--icon"><i class="ni ni-ruler-pencil"></i>
             </span>
             <span class=" btn-inner--text"> Editar </span>
             </button>
+            <!-- <button class=" btn btn-icon btn-info" type="button" (click)="navigate('new')"><span
+              class=" btn-inner--icon"><i class="ni ni-ruler-pencil"></i>
+            </span>
+            <span class=" btn-inner--text"> Novo </span>
+            </button> -->
           </div>
   
         </div>
@@ -230,25 +235,15 @@
             <div class=" dropzone dropzone-multiple" id="dropzone-multiple">
               <div class=" fallback">
                 <div class=" custom-file">
-                  <input
-                    class=" custom-file-input"
-                    id="customFileUploadMultiple"
-                    multiple="multiple"
-                    type="file"
-                  />
+                  <input class=" custom-file-input" id="customFileUploadMultiple" multiple="multiple" type="file" />
 
-                  <label
-                    class=" custom-file-label"
-                    for="customFileUploadMultiple"
-                  >
+                  <label class=" custom-file-label" for="customFileUploadMultiple">
                     Choose file
                   </label>
                 </div>
               </div>
 
-              <ul
-                class=" dz-preview dz-preview-multiple list-group list-group-lg list-group-flush" id="dz-preview-multiple"
-              >
+             <ul class=" dz-preview dz-preview-multiple list-group list-group-lg list-group-flush" id="dz-preview-multiple">
                 <li class=" list-group-item px-0">
                   <div class=" row align-items-center">
                     <div class=" col-auto">

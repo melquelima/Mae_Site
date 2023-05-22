@@ -10,3 +10,7 @@
 .fill-default {
     fill: #ec268f;
 }
+
+.bg-default {
+    background-color: #ec268f!important;
+}

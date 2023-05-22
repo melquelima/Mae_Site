@@ -49,23 +49,26 @@ export class ProdutoComponent implements OnInit {
     private snackBar:SnackBarService,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) { 
+
+  }
 
   ngOnInit(): void {
+    this.initDropZone();
+    this.initDropZone_Capa();
+
     if(this.mode == 'new'){
       this.carregaCategorias();
-      this.initDropZone();
-      this.initDropZone_Capa();
     }
     if(this.mode == 'view'){
       this.loadProduto(this.prod_id)
       this.initImages(this.prod_id)
     }
     if(this.mode == 'edit'){
+      console.log("EDIT")
       this.carregaCategorias();
       this.loadProduto(this.prod_id)
       this.initImages(this.prod_id)
-      this.initDropZone();
     }
     
     
@@ -83,6 +86,8 @@ export class ProdutoComponent implements OnInit {
   initDropZone():void{
     let currentMultipleFile = undefined;
     // multiple dropzone file - accepts any type of file
+    if (this.drp != null) this.drp.destroy()
+    console.log("FOI")
     this.drp = new Dropzone(document.getElementById("dropzone-multiple"), {
       url: "https://",
       thumbnailWidth: null,
@@ -112,6 +117,7 @@ export class ProdutoComponent implements OnInit {
   initDropZone_Capa():void{
     let currentMultipleFile = undefined;
     // multiple dropzone file - accepts any type of file
+    if (this.drp_capa != null) return
     this.drp_capa = new Dropzone(document.getElementById("dropzone-multiple-capa"), {
       url: "https://",
       thumbnailWidth: null,
@@ -159,7 +165,9 @@ export class ProdutoComponent implements OnInit {
   }
 
   addTag():void{
-    this.produto.Tags = this.selectorMultiple.selectedIndexes.map(x=>this.tags[x].id)
+    if(this.selectorMultiple){
+      this.produto.Tags = this.selectorMultiple.selectedIndexes.map(x=>this.tags[x].id)
+    }
   }
 
   valida_produto():boolean{
@@ -175,7 +183,6 @@ export class ProdutoComponent implements OnInit {
   cadastrar():void{
     if(this.valida_produto()){
       this.produtoService.novo_produto(this.produto,this.drp_capa.files,this.drp.files).subscribe((a:any)=>{
-        console.log(a)
         this.cadastrando = true
         this.waitImageLoads(a,"Produto cadastrado com sucesso!")
       },err=>{
@@ -191,7 +198,6 @@ export class ProdutoComponent implements OnInit {
     if(this.valida_produto()){
       this.produto.Tags = this.selectorMultiple.selectedIndexes.map(x=>this.tags[x].id)
       this.produtoService.editar_produto(this.produto,this.drp.files).subscribe((a:any)=>{
-        console.log(a)
         if(a.threadId){
           this.waitImageLoads(a,"Produto editado com sucesso!")
         }else{
@@ -207,16 +213,13 @@ export class ProdutoComponent implements OnInit {
  
     this.subscribe = interval(1000).subscribe((func => {
       this.produtoService.progress(data.threadId).subscribe((a:any)=>{
-        console.log(a)
         this.progress = a.progress*100
-        console.log(this.progress)
         // if(a.status != "PROCESSING"){
         //   console.log("1")
         //   this.subscribe.unsubscribe()
         //   this.progress = 0
         // }
         if(a.status == "DONE"){
-          console.log("2")
           this.subscribe.unsubscribe()
           this.snackBar.Success(msg)
           this.router.navigate([`/produtos/${data.id_produto}/view`])
@@ -224,11 +227,9 @@ export class ProdutoComponent implements OnInit {
           
         }
         if(a.status == "ERROR"){
-          console.log("3")
           this.snackBar.Danger(a.message)
         }
       },err=>{
-        console.log("4")
         this.snackBar.Danger(err.error)
         this.subscribe.unsubscribe()
       })
@@ -253,7 +254,7 @@ export class ProdutoComponent implements OnInit {
 
       this.categoria = produto.Categoria.categoria
       this.produto = produto
-      console.log(produto)
+      
       
       this.alertService.closeLoading()
     })
@@ -262,7 +263,7 @@ export class ProdutoComponent implements OnInit {
   initImages(id):void{
     this.produtoService.getImages(id).subscribe((a:any)=>{
       this.slides = a
-      console.log(a)
+      
     },err=>{
       console.log(err)
     })
@@ -297,11 +298,20 @@ export class ProdutoComponent implements OnInit {
     this.produtoService.deleteImage(img).subscribe((a:any)=>{
       var idx = this.slides.indexOf(img)
       this.slides.splice(idx, 1)
-      console.log(img)
+      
       this.alertService.closeLoading()
       this.snackBar.Success("Imagem removida com sucesso!")
     })
     
+  }
+
+  navigate(route):void{
+
+    //this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    //this.router.navigate(["/produtos/" + route]);
+    this.mode= "edit"
+    
+      
   }
 
 }
