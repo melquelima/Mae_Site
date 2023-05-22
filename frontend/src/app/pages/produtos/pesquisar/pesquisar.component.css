@@ -1,0 +1,36 @@
+#carrousel{
+    display: flex;
+    justify-content: center;
+}
+
+#carouselExampleIndicators{
+    width: 50%;
+}
+
+.img-carrousel{
+    object-fit: cover !important;
+    width: 100px;
+    height: 100px;
+}
+
+.test{
+    width: 100px;
+    height: 100px;
+    background-color: #ffffff;
+    cursor: default;
+}
+
+::ng-deep.swal2-image {
+    max-width: 100% !important; 
+}
+
+.buttons{
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+}
+
+.buttons button{
+    margin-right: 0.0rem;
+    padding: 0px 0px 0px 0px;
+}

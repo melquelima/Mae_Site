@@ -1,0 +1,12 @@
+.main-content{
+    background-color: #f8f9fe !important
+}
+
+.bg-gradient-danger
+{
+    background: linear-gradient(87deg, #ec268f 0,#faed1f, #20abe2 100%) !important;
+}
+
+.fill-default {
+    fill: #ec268f;
+}

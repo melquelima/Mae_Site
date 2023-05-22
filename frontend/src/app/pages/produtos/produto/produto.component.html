@@ -1,0 +1,317 @@
+<div class=" header bg-danger pb-6">
+    <div class=" container-fluid">
+      <div class=" header-body">
+        <div class=" row align-items-center py-4">
+          <div class=" col-lg-6 col-7">
+            <h6 class=" h2 text-white d-inline-block mb-0">{{title}}</h6>
+
+            <nav aria-label="breadcrumb" class=" d-none d-md-inline-block ml-md-4">
+              <ol class=" breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class=" breadcrumb-item">
+                  <a href="javascript:void(0)"> <i class=" fas fa-home"> </i> </a>
+                </li>
+  
+                <li class=" breadcrumb-item">
+                  <a href="javascript:void(0)"> Produtos </a>
+                </li>
+  
+                <li aria-current="page" class=" breadcrumb-item active">
+                  {{title}}
+                </li>
+              </ol>
+            </nav>
+  
+            
+          </div>
+          <div class=" col-lg-6 col-5 text-right" [hidden]="mode != 'view'">
+            <button class=" btn btn-icon btn-warning" type="button" [routerLink]="['/produtos/'+produto.id+'/edit']"><span
+              class=" btn-inner--icon"><i class="ni ni-ruler-pencil"></i>
+            </span>
+            <span class=" btn-inner--text"> Editar </span>
+            </button>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class=" container-fluid mt--6">
+
+    <div class="col-md-12">
+
+      <div class=" card mb-4" [hidden]="mode == 'new' || !slides.length">
+        <div class=" card-header"><h3 class=" mb-0">Galeria</h3></div>
+    
+        <div class=" card-body">
+          <div class=" row">
+            <div class="col-md-12" id="carrousel">
+                <ngx-magic-carousel
+                    [height]="260"
+                    [cellWidth]="260"
+                    [margin]="16"
+                    [marginFirst]="16"
+                    [marginLast]="16"
+                    [transition]="300"
+                    [arrows]="true"
+                    [swipeByMouse]="true"
+                    >
+                    <div class="carousel-cell" *ngFor="let slide of slides;">
+                        <div class="test">
+                            <img [src]="'https://i.imgur.com/' + slide + '.jpg'" class="img-carrousel"  (click)="openImage(slide)"/>
+                            <span class="excludeBtn" (click)="removeImage(slide)" [hidden]="mode != 'edit'"> <i class="ni ni-fat-remove removeIcon"></i></span>
+                            <span class="makeCover" (click)="makeCover(slide)" [hidden]="mode != 'edit'"> <i class="ni ni-book-bookmark bookIcon"></i></span>
+                            <span class="makeCover" [hidden]="produto.capa != slide"> <i class="ni ni-check-bold bookIconCover"></i></span>
+                        </div>
+                    </div>
+                </ngx-magic-carousel>
+            </div>
+          </div>
+
+        </div>
+    </div>
+
+      <div class=" card mb-4">
+        <div class=" card-header"><h3 class=" mb-0">Dados</h3></div>
+        <div class=" card-body">
+          <div class=" row">
+            <div class=" col-md-6">
+              <div class=" form-group">
+                  <label class=" form-control-label" for="exampleFormControlSelect1">
+                    Categoria
+                  </label>
+
+                  <select class=" form-control" id="exampleFormControlSelect1" [(ngModel)]="categoria" (ngModelChange)="produto.id_categoria = null" [disabled]="mode == 'view'">
+                    <option [ngValue]="null">Selecione...</option>
+                    <option *ngFor="let item of categorias | listJsonUnique:'categoria' | sort:'categoria'" [ngValue]="item.categoria">{{item.categoria}}</option>
+                  </select>
+                </div>
+            </div>
+    
+            <div class=" col-md-6">
+              <div class=" form-group">
+                  <label class=" form-control-label" for="exampleFormControlSelect1">
+                    Tipo
+                  </label>
+
+                  <select class=" form-control" id="exampleFormControlSelect1" [disabled]="!categoria || mode =='view'" [(ngModel)]="produto.id_categoria">
+                    <option [ngValue]="null">Selecione...</option>
+                    <option *ngFor="let item of categorias | listJsonFilter:{'categoria':categoria} | listJsonUnique:'tipo' | sort:'tipo'" [ngValue]="item.id">{{item.tipo}}</option>
+                  </select>
+                </div>
+            </div>
+
+          </div>
+
+          <div class=" row">
+              <div class=" col-md-12">
+                <div class=" form-group">
+                  <label class=" form-control-label" for="example2cols1Input">
+                    Descricao
+                  </label>
+      
+                  <input class=" form-control" id="example2cols1Input" placeholder="Descrição do item" type="text" [(ngModel)]="produto.descricao" [disabled]="mode == 'view'"/>
+                </div>
+              </div>
+            </div>
+    
+          <div class=" row">
+            <div class=" col-sm-4">
+              <div class=" form-group">
+                <label class=" form-control-label" for="example4cols1Input">
+                  Sempre Disponível
+                </label><br>
+    
+                <label class=" custom-toggle custom-toggle-success mr-1">
+                  <input checked="checked" type="checkbox" id="sempre_disponivel" [(ngModel)]="produto.sempre_disponivel" [disabled]="mode == 'view'" (ngModelChange)="produto.quantidade = produto.sempre_disponivel?null:produto.quantidade"/>
+
+                  <span class=" custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes">
+                  </span>
+                </label>
+              </div>
+            </div>
+    
+            <div class=" col-sm-4">
+              <div class=" form-group">
+                <label class=" form-control-label" for="example4cols2Input">
+                  Quantidade
+                </label>
+    
+                <input class="form-control" id="example4cols2Input" placeholder="0" type="number" [disabled]="produto.sempre_disponivel || mode == 'view'" [(ngModel)]="produto.quantidade"/>
+              </div>
+            </div>
+    
+            <div class=" col-sm-4">
+              <div class=" form-group">
+                  <label class=" form-control-label" for="example2cols2Input">
+                    Valor
+                  </label>
+
+                  <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">R$</span>
+                      </div>
+                      <input type="number" class="form-control" placeholder="0,00" aria-describedby="basic-addon1" [(ngModel)]="produto.valor" [disabled]="mode == 'view'">
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="row">
+              <div class=" col-sm-12">
+                  <div class=" form-group">
+                      <label class=" form-control-label" for="example2cols2Input">
+                        Tags
+                      </label>
+                      <select class=" form-control" data-toggle="select" id="selectr-multiple" [(ngModel)]="tagSelected" (ngModelChange)="addTag()">
+                      </select>
+                      <!-- <select class=" form-control" data-toggle="select" id="selectr-multiple" > -->
+                        <!-- <option *ngFor="let item of tags | sort:'tag'" [ngValue]="item.id">{{item.tag}}</option> -->
+                      <!-- </select> -->
+                  </div>
+              </div>
+              
+          </div>
+          
+          
+          
+        </div>
+      </div>
+
+      <div class=" card mb-4" [hidden]="mode=='view' || mode =='edit'">
+        <div class=" card-header"><h3 class=" mb-0">Capa</h3></div>
+    
+        <div class=" card-body">
+        
+            <div class=" dropzone dropzone-multiple" id="dropzone-multiple-capa">
+              <div class=" fallback">
+                <div class=" custom-file">
+                  <input class=" custom-file-input" id="customFileUploadMultiple-capa" multiple="multiple" type="file" />
+
+                  <label class=" custom-file-label" for="customFileUploadMultiple-capa">
+                    Choose file
+                  </label>
+                </div>
+              </div>
+
+              <ul class=" dz-preview dz-preview-multiple list-group list-group-lg list-group-flush" id="dz-preview-multiple-capa">
+                <li class=" list-group-item px-0">
+                  <div class=" row align-items-center">
+                    <div class=" col-auto">
+                      <div class=" avatar">
+                        <img alt="..." class=" avatar-img rounded" data-dz-thumbnail="" src="..." />
+                      </div>
+                    </div>
+
+                    <div class=" col ml--3">
+                      <h4 class=" mb-1" data-dz-name="">...</h4>
+
+                      <p class=" small text-muted mb-0" data-dz-size="">...</p>
+                    </div>
+
+                    <div class=" col-auto">
+                      <button data-dz-remove="true" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+      </div>
+
+
+    <div class=" card mb-4" [hidden]="mode=='view'">
+        <div class=" card-header"><h3 class=" mb-0">Fotos</h3></div>
+    
+        <div class=" card-body">
+        
+            <div class=" dropzone dropzone-multiple" id="dropzone-multiple">
+              <div class=" fallback">
+                <div class=" custom-file">
+                  <input
+                    class=" custom-file-input"
+                    id="customFileUploadMultiple"
+                    multiple="multiple"
+                    type="file"
+                  />
+
+                  <label
+                    class=" custom-file-label"
+                    for="customFileUploadMultiple"
+                  >
+                    Choose file
+                  </label>
+                </div>
+              </div>
+
+              <ul
+                class=" dz-preview dz-preview-multiple list-group list-group-lg list-group-flush" id="dz-preview-multiple"
+              >
+                <li class=" list-group-item px-0">
+                  <div class=" row align-items-center">
+                    <div class=" col-auto">
+                      <div class=" avatar">
+                        <img
+                          alt="..."
+                          class=" avatar-img rounded"
+                          data-dz-thumbnail=""
+                          src="..."
+                        />
+                      </div>
+                    </div>
+
+                    <div class=" col ml--3">
+                      <h4 class=" mb-1" data-dz-name="">...</h4>
+
+                      <p class=" small text-muted mb-0" data-dz-size="">...</p>
+                    </div>
+
+                    <div class=" col-auto">
+                      <button
+                        data-dz-remove="true"
+                        class="btn btn-danger btn-sm"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+      </div>
+  
+    <div class=" row" [hidden]="mode == 'view'">
+      <div class=" col-lg-12">
+        <div class=" card-wrapper">
+         <div class=" card">
+            
+  
+            <div class=" card-body">
+              <form>
+                <div class=" form-group">
+                  <label class=" form-control-label" [hidden]="!cadastrando">Cadastrando...</label>
+  
+                  <button class="btn btn-primary btn-block" type="submit" (click)="cadastrar()" [hidden]="progress || mode != 'new'">
+                    Cadastrar
+                  </button>
+                  <button class="btn btn-primary btn-block" type="submit" (click)="editar()" [hidden]="progress || mode != 'edit'">
+                    Editar
+                  </button>
+                  <div class="progress" [hidden]="!cadastrando">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{'width': progress + '%'}" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">{{progress.toFixed(1)}}%</div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+  
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  

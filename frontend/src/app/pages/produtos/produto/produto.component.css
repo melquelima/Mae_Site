@@ -1,0 +1,104 @@
+.progress {
+    height: 15px;
+
+}
+.progress-bar{
+    width: 50%;
+    background-color: #f5365c;
+}
+
+
+
+#carrousel{
+    display: flex;
+    justify-content: center;
+}
+
+#carouselExampleIndicators{
+    width: 50%;
+}
+
+.saveBtn{
+    margin-top: 0.5rem;
+}
+
+
+.img-carrousel{
+    object-fit: cover !important;
+    width: 260px;
+    height: 260px;
+}
+
+.test{
+    width: 260px;
+    height: 260px;
+    background-color: #ffffff;
+    cursor: default;
+}
+
+.excludeBtn{
+    position: absolute;
+    top: 90%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+    border-radius:50%;
+}
+
+.removeIcon{
+    font-size: 1.5em;
+    color: white;
+    BACKGROUND-COLOR: #f5365c;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.removeIcon:hover{
+    background-color: #f75a7a;
+}
+
+
+.makeCover{
+    position: absolute;
+    top: 90%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    border-radius:50%;
+}
+
+.bookIcon{
+    font-size: 0.8em;
+    color: white;
+    BACKGROUND-COLOR: #5b4283;
+    border:1px white solid;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.bookIconCover{
+    font-size: 0.8em;
+    color: white;
+    BACKGROUND-COLOR: #029900;
+    border:1px white solid;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 5px;
+}
+
+
+
+
+::ng-deep.swal2-image {
+     max-width: 100% !important; 
+}
+
+/* ::ng-deep.selectr-tag-remove{
+    display: none !important;
+} */
+
+
+.btn-warning {
+    color: #fff;
+    background-color: #fbb040;
+    border-color: #fbb040;
+}
