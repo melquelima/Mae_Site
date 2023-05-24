@@ -153,7 +153,7 @@ export class ProdutoComponent implements OnInit {
   carregaTags():void{
     this.alertService.loading("Carregando Tags.....")
     this.obs_tags =  this.tagService.getTags()
-    if(this.mode == "new"){
+    if(this.mode == "new" || this.mode == "edit"){
       this.obs_tags.subscribe((tags: Tag[]) => {
         this.tags = tags
         this.initTags(tags.map(x=>({text:x.tag,value:x.tag})));
@@ -309,6 +309,8 @@ export class ProdutoComponent implements OnInit {
     //this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     //this.router.navigate(["/produtos/" + route]);
     this.mode= "edit"
+    this.carregaCategorias();
+
     
       
   }
